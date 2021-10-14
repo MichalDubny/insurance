@@ -1,0 +1,106 @@
+
+
+<ng-container *ngIf="!isBusy; else progresSpiner">
+  <form [formGroup]="form">
+    <div class=" box--center">
+
+      <h3>Variant poistenia*</h3>
+
+      <div class="radio radio--inline"
+           [ngClass]="{'radio--selected':  selectedType === TYPE_OF_INSURANCE.KCP}"
+           (click)="selectTypeOfInsutrence(TYPE_OF_INSURANCE.KCP)">
+        krátkodobé poistenie
+      </div>
+
+      <div class="radio  radio--inline"
+           [ngClass]="{'radio--selected':  selectedType === TYPE_OF_INSURANCE.CCP}"
+           (click)="selectTypeOfInsutrence(TYPE_OF_INSURANCE.CCP)">
+        celoročné poistenie
+      </div>
+
+      <div class="inputbox has-value"
+           [ngClass]="{'has-error': !form.controls.dateFrom.valid}">
+        <label>Začiatok poistenia*</label>
+        <input type="date"
+               [formControlName]="'dateFrom'">
+        <div class="error">Je potrebné zadať začiatok poistenia.</div>
+        <i class="icon icon--error-icon"></i>
+      </div>
+
+      <div class="inputbox has-value "
+           [ngClass]="{'has-error': !form.controls.dateTo.valid &&selectedType !== TYPE_OF_INSURANCE.CCP }">
+        <label>Koniec poistenia*</label>
+        <input [type]="'date'"
+               [formControlName]="'dateTo'">
+        <div class="error">Je potrebné zadať koniec poistenia. </div>
+        <i class="icon icon--error-icon"></i>
+      </div>
+    </div>
+
+
+    <div class=" box--big dlazdica-container">
+      <h3>Balík*</h3>
+      <app-card [label]="(selectedType === TYPE_OF_INSURANCE.KCP) ? 'krátkodobé poistenie': 'celoročné poistenie'"
+                [cardText]="'základný balík'"
+                [type]="PACKAGE_TYPE.ZAKLADNY"
+                [isSelected]="selectedPackage=== PACKAGE_TYPE.ZAKLADNY"
+                [amount]="(selectedType === TYPE_OF_INSURANCE.KCP) ? 1.2 : 39"
+                [isPerDay]="selectedType === TYPE_OF_INSURANCE.KCP"
+                (selectedEvent)="onSelectedPackageType($event)">
+      </app-card>
+      <app-card [label]="(selectedType === TYPE_OF_INSURANCE.KCP) ? 'krátkodobé poistenie': 'celoročné poistenie'"
+                [cardText]="'rozšírený balík'"
+                [type]="PACKAGE_TYPE.ROZSIRENY"
+                [isSelected]="selectedPackage === PACKAGE_TYPE.ROZSIRENY"
+                [amount]="(selectedType === TYPE_OF_INSURANCE.KCP) ? 1.8 : 49"
+                [isPerDay]="selectedType === TYPE_OF_INSURANCE.KCP"
+                (selectedEvent)="onSelectedPackageType($event)">
+      </app-card>
+      <app-card [label]="(selectedType === TYPE_OF_INSURANCE.KCP) ? 'krátkodobé poistenie': 'celoročné poistenie'"
+                [cardText]="'extra balík'"
+                [type]="PACKAGE_TYPE.EXTRA"
+                [isSelected]="selectedPackage === PACKAGE_TYPE.EXTRA"
+                [amount]="(selectedType === TYPE_OF_INSURANCE.KCP) ? 2.4 : 59"
+                [isPerDay]="selectedType === TYPE_OF_INSURANCE.KCP"
+                (selectedEvent)="onSelectedPackageType($event)">
+      </app-card>
+    </div>
+    <div class="dlazdica-container">
+      <h3>Pripoistenia</h3>
+      <app-card [label]="'storno cesty'"
+                [type]="ADDITIONAL_INSURANCE.STORNO"
+                [isSelected]="selectedAddInsurance.includes(ADDITIONAL_INSURANCE.STORNO)"
+                [isUnselectable]="true"
+                [cardText]="(selectedType === TYPE_OF_INSURANCE.KCP) ? '50% prirážka k sadzbe' : '20% prirážka k sadzbe'"
+                (selectedEvent)="onSelectedAddInsuranceType($event)">
+      </app-card>
+      <app-card [label]="'športové aktivity'"
+                [type]="ADDITIONAL_INSURANCE.SPORT"
+                [isSelected]="selectedAddInsurance.includes(ADDITIONAL_INSURANCE.SPORT)"
+                [isUnselectable]="true"
+                [cardText]="(selectedType === TYPE_OF_INSURANCE.KCP) ? '30% prirážka k sadzbe' : '10% prirážka k sadzbe'"
+                (selectedEvent)="onSelectedAddInsuranceType($event)">
+      </app-card>
+    </div>
+
+
+
+    <div class="select box has-value"
+         [ngClass]="{'has-error': !form.controls.numberPersons.valid}">
+      <label>Počet osôb*</label>
+      <input type="number"
+             [formControlName]="'numberPersons'">
+      <div class="error"> Je povolené zadať 1 až 3 osoby.
+      </div>
+    </div>
+  </form>
+  <br>
+  <button class="btn btn--black-green"
+          [ngClass]="{'btn--disabled':  !isValid()}"
+          [disabled]='!isValid()'
+          (click)="onSubmitForm()">Potvrdiť
+  </button>
+</ng-container>
+<ng-template #progresSpiner>
+  <div class="loader"></div>
+</ng-template>

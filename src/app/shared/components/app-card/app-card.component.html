@@ -1,0 +1,26 @@
+<div class="dlazdica dlazdica-vyber app-card__wrapper"
+     [ngClass]="{'dlazdica--selected':  isSelected}">
+  <div class="dlazdica-infoIcon">
+  </div>
+  <div class="dlazdica-mainIcon">
+    <p class="dlazdica-nazov">{{label}}</p>
+    <div *ngIf="amount">
+      <p class="dlazdica-cena">
+        <span>{{amount}}</span>
+        <span *ngIf="isPerDay"
+              class="dlazdica-unit">€ / deň</span>
+        <span *ngIf="!isPerDay"
+              class="dlazdica-unit">€</span>
+      </p>
+    </div>
+  </div>
+  <div class="dlazdica-label">
+    {{cardText}}
+  </div>
+  <button class="btn"
+          (click)="onSelected()">
+    <i class="icon icon--checkmark-white"
+       style="vertical-align: middle; position: relative;"></i>
+    Vybrať
+  </button>
+</div>

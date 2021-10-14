@@ -1,0 +1,15 @@
+<div class="box box--big box--white">
+  <insurance-form></insurance-form>
+
+
+  <div class="box--big"
+       *ngIf="calculationInsuranceService.calculatedInsuranceEvent | async">
+    <h3>Cena poistenia</h3>
+    <div class="inputbox is-valid has-value">
+      <input readonly
+             type="text"
+             [value]="claculatedInsurance | currency: 'EUR': true">
+    </div>
+  </div>
+
+</div>
